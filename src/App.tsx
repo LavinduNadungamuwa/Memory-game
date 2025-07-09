@@ -38,7 +38,7 @@ function App() {
 
   const getGridCols = () => {
     switch (difficulty) {
-      case 'easy': return 'grid-cols-4';
+      case 'easy': return 'grid-cols-3';
       case 'medium': return 'grid-cols-4';
       case 'hard': return 'grid-cols-5';
       default: return 'grid-cols-4';
@@ -55,68 +55,68 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-2">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-4">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-4">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Gamepad2 className="w-6 h-6 text-white" />
-            <h1 className="text-2xl font-bold text-white">Memory Game</h1>
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Gamepad2 className="w-8 h-8 text-white" />
+            <h1 className="text-4xl font-bold text-white">Memory Game</h1>
           </div>
-          <p className="text-white/80 text-sm">Match all the pairs to win!</p>
+          <p className="text-white/80 text-lg">Match all the pairs to win!</p>
           
           {/* Difficulty Badge */}
-          <div className="mt-2">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r ${getDifficultyColor()}`}>
+          <div className="mt-4">
+            <span className={`inline-flex items-center px-4 py-2 rounded-full text-white font-medium bg-gradient-to-r ${getDifficultyColor()}`}>
               {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Level
             </span>
           </div>
         </div>
 
         {/* Game Controls */}
-        <div className="flex justify-center gap-2 mb-4">
+        <div className="flex justify-center gap-4 mb-8">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="bg-white/20 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1"
+            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
             title={soundEnabled ? 'Disable sound' : 'Enable sound'}
           >
-            {soundEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
+            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
           </button>
           
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="bg-white/20 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 text-sm"
+            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
           >
-            <Settings className="w-3 h-3" />
+            <Settings className="w-4 h-4" />
             Settings
           </button>
           
           <button
             onClick={resetGame}
-            className="bg-white/20 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 text-sm"
+            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
           >
-            <RefreshCw className="w-3 h-3" />
+            <RefreshCw className="w-4 h-4" />
             Reset
           </button>
         </div>
 
         {/* Settings Panel */}
         {showSettings && (
-          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 mb-4 border border-white/30">
-            <h3 className="text-white text-lg font-semibold mb-3">Difficulty</h3>
-            <div className="flex gap-2 justify-center">
+          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/30">
+            <h3 className="text-white text-xl font-semibold mb-4">Difficulty</h3>
+            <div className="flex gap-4 justify-center">
               {(['easy', 'medium', 'hard'] as const).map((level) => (
                 <button
                   key={level}
                   onClick={() => handleDifficultyChange(level)}
-                  className={`px-4 py-1.5 rounded-lg font-medium transition-all duration-200 text-sm ${
+                  className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
                     difficulty === level
                       ? 'bg-white text-purple-700'
                       : 'bg-white/20 text-white hover:bg-white/30'
                   }`}
                 >
                   {level.charAt(0).toUpperCase() + level.slice(1)}
-                  <span className="text-xs ml-1">
+                  <span className="text-sm ml-2">
                     ({level === 'easy' ? '6' : level === 'medium' ? '8' : '10'} pairs)
                   </span>
                 </button>
@@ -126,17 +126,15 @@ function App() {
         )}
 
         {/* Game Stats */}
-        <div className="mb-4">
-          <GameStats 
-            moves={moves} 
-            time={time} 
-            matches={matches} 
-            totalPairs={totalPairs} 
-          />
-        </div>
+        <GameStats 
+          moves={moves} 
+          time={time} 
+          matches={matches} 
+          totalPairs={totalPairs} 
+        />
 
         {/* Game Board */}
-        <div className={`grid ${getGridCols()} gap-2 justify-center max-w-fit mx-auto mb-4`}>
+        <div className={`grid ${getGridCols()} gap-4 justify-center max-w-fit mx-auto`}>
           {cards.map(card => (
             <Card
               key={card.id}

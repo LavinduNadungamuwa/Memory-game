@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`relative w-16 h-16 cursor-pointer transition-all duration-300 ${
+      className={`relative w-20 h-20 cursor-pointer transition-all duration-300 ${
         disabled ? 'cursor-not-allowed' : 'hover:scale-105'
       }`}
       onClick={!disabled ? onClick : undefined}
@@ -62,9 +62,7 @@ const Card: React.FC<CardProps> = ({
             <div className={`transition-all duration-300 ${
               isMatched ? 'text-white' : 'text-gray-700'
             }`}>
-              <div className="scale-75">
-                {symbolMap[symbol]}
-              </div>
+              {symbolMap[symbol]}
             </div>
           </div>
         </div>
