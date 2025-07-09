@@ -103,14 +103,6 @@ export const useSoundEffects = (enabled: boolean = true) => {
     }
   }, [createAudioContext, enabled]);
 
-  return {
-    playMatchSound,
-    playLevelCompleteSound,
-    playTapSound,
-    playLevelStartSound
-  };
-};
-
   // Generate tap sound - a subtle click
   const playTapSound = useCallback(() => {
     if (!enabled) return;
@@ -204,3 +196,11 @@ export const useSoundEffects = (enabled: boolean = true) => {
       console.log('Audio not supported or blocked');
     }
   }, [createAudioContext, enabled]);
+
+  return {
+    playMatchSound,
+    playLevelCompleteSound,
+    playTapSound,
+    playLevelStartSound
+  };
+};
