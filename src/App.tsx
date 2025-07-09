@@ -6,7 +6,7 @@ import GameComplete from './components/GameComplete';
 import { useMemoryGame } from './hooks/useMemoryGame';
 
 function App() {
-  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [showSettings, setShowSettings] = useState(false);
   
   const {
@@ -24,7 +24,14 @@ function App() {
   const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
     setDifficulty(newDifficulty);
     setShowSettings(false);
-    // The useMemoryGame hook will reinitialize when difficulty changes
+  };
+
+  const handleNextLevel = () => {
+    if (difficulty === 'easy') {
+      setDifficulty('medium');
+    } else if (difficulty === 'medium') {
+      setDifficulty('hard');
+    }
   };
 
   const getGridCols = () => {
@@ -33,6 +40,15 @@ function App() {
       case 'medium': return 'grid-cols-4';
       case 'hard': return 'grid-cols-5';
       default: return 'grid-cols-4';
+    }
+  };
+
+  const getDifficultyColor = () => {
+    switch (difficulty) {
+      case 'easy': return 'from-green-500 to-emerald-600';
+      case 'medium': return 'from-yellow-500 to-orange-500';
+      case 'hard': return 'from-red-500 to-pink-600';
+      default: return 'from-indigo-500 to-purple-600';
     }
   };
 
@@ -46,6 +62,13 @@ function App() {
             <h1 className="text-4xl font-bold text-white">Memory Game</h1>
           </div>
           <p className="text-white/80 text-lg">Match all the pairs to win!</p>
+          
+          {/* Difficulty Badge */}
+          <div className="mt-4">
+            <span className={`inline-flex items-center px-4 py-2 rounded-full text-white font-medium bg-gradient-to-r ${getDifficultyColor()}`}>
+              {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Level
+            </span>
+          </div>
         </div>
 
         {/* Game Controls */}
@@ -120,7 +143,9 @@ function App() {
           <GameComplete
             moves={moves}
             time={time}
+            difficulty={difficulty}
             onRestart={resetGame}
+            onNextLevel={handleNextLevel}
           />
         )}
       </div>

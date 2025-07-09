@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Heart, Star, Zap, Crown, Gem } from 'lucide-react';
+import { Sparkles, Heart, Star, Zap, Crown, Gem, Diamond, Circle, Square, Triangle } from 'lucide-react';
 
 interface CardProps {
   id: number;
@@ -17,6 +17,10 @@ const symbolMap: { [key: string]: React.ReactNode } = {
   'zap': <Zap className="w-8 h-8" />,
   'crown': <Crown className="w-8 h-8" />,
   'gem': <Gem className="w-8 h-8" />,
+  'diamond': <Diamond className="w-8 h-8" />,
+  'circle': <Circle className="w-8 h-8" />,
+  'square': <Square className="w-8 h-8" />,
+  'triangle': <Triangle className="w-8 h-8" />,
 };
 
 const Card: React.FC<CardProps> = ({

@@ -7,7 +7,7 @@ interface Card {
   isMatched: boolean;
 }
 
-const symbols = ['heart', 'star', 'sparkles', 'zap', 'crown', 'gem'];
+const symbols = ['heart', 'star', 'sparkles', 'zap', 'crown', 'gem', 'diamond', 'circle', 'square', 'triangle'];
 
 export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium') => {
   const getPairCount = () => {
@@ -75,12 +75,12 @@ export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium')
     initializeGame();
   }, [initializeGame]);
 
-  // Initialize game on mount
+  // Initialize game on mount and when difficulty changes
   useEffect(() => {
     initializeGame();
   }, [initializeGame]);
 
-  // Timer effect
+  // Timer effect - stops when game is complete
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     if (isGameActive && !isGameComplete) {
@@ -129,7 +129,7 @@ export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium')
   useEffect(() => {
     if (matches === totalPairs && matches > 0) {
       setIsGameComplete(true);
-      setIsGameActive(false);
+      setIsGameActive(false); // This stops the timer
     }
   }, [matches, totalPairs]);
 
