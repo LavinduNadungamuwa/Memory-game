@@ -3,20 +3,44 @@ import Card from './components/Card';
 import GameStats from './components/GameStats';
 import GameComplete from './components/GameComplete';
 import { useMemoryGame } from './hooks/useMemoryGame';
+import { useSoundEffects } from './hooks/useSoundEffects';
 
 function App() {
   const {
     cards,
     flippedCards,
+    matchedCards,
     moves,
-    matches,
-    time,
-    totalPairs,
-    isGameComplete,
-    flipCard,
-    resetGame,
-    difficulty = 'medium'
+    gameComplete,
+    handleCardClick,
+    resetGame
   } = useMemoryGame();
+
+  const { playFlip, playMatch, playComplete } = useSoundEffects();
+
+  const handleCardClickWithSound = (id: number) => {
+    handleCardClick(id);
+    
+    if (flippedCards.length === 0) {
+      playFlip();
+    } else if (flippedCards.length === 1) {
+      playFlip();
+      // Check if cards match after a short delay
+      setTimeout(() => {
+        const firstCard = cards.find(card => card.id === flippedCards[0]);
+        const secondCard = cards.find(card => card.id === id);
+        if (firstCard && secondCard && firstCard.value === secondCard.value) {
+          playMatch();
+        }
+      }, 500);
+    }
+  };
+
+  React.useEffect(() => {
+    if (gameComplete) {
+      playComplete();
+    }
+  }, [gameComplete, playComplete]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4">
@@ -25,33 +49,22 @@ function App() {
           Memory Game
         </h1>
         
-        <GameStats 
-          moves={moves} 
-          time={time} 
-          matches={matches} 
-          totalPairs={totalPairs} 
-        />
+        <GameStats moves={moves} onReset={resetGame} />
         
         <div className="grid grid-cols-4 gap-4 mb-8">
           {cards.map((card) => (
             <Card
               key={card.id}
               card={card}
-              isFlipped={card.isFlipped}
-              isMatched={card.isMatched}
-              onClick={() => flipCard(card.id)}
+              isFlipped={flippedCards.includes(card.id) || matchedCards.includes(card.id)}
+              isMatched={matchedCards.includes(card.id)}
+              onClick={() => handleCardClickWithSound(card.id)}
             />
           ))}
         </div>
         
-        {isGameComplete && (
-          <GameComplete 
-            moves={moves} 
-            time={time} 
-            difficulty={difficulty}
-            onRestart={resetGame} 
-            onNextLevel={() => {}} 
-          />
+        {gameComplete && (
+          <GameComplete moves={moves} onPlayAgain={resetGame} />
         )}
       </div>
     </div>
