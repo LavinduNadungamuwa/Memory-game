@@ -13,6 +13,7 @@ function App() {
     time,
     totalPairs,
     isGameComplete,
+    isFlipDisabled,
     flipCard,
     resetGame,
     difficulty = 'medium'
@@ -36,9 +37,13 @@ function App() {
           {cards.map((card) => (
             <Card
               key={card.id}
+              id={card.id}
+              symbol={card.symbol}
               card={card}
               isFlipped={card.isFlipped}
               isMatched={card.isMatched}
+              disabled={isFlipDisabled}
+              difficulty={difficulty}
               onClick={() => flipCard(card.id)}
             />
           ))}
