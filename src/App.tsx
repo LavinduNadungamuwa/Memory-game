@@ -1,207 +1,125 @@
-import React, { useState } from 'react';
-import { Gamepad2, RefreshCw, Settings, Volume2, VolumeX } from 'lucide-react';
-import Card from './components/Card';
-import GameStats from './components/GameStats';
-import GameComplete from './components/GameComplete';
-import { useMemoryGame } from './hooks/useMemoryGame';
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en-US"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en-US"> <!--<![endif]-->
+<head>
 
-function App() {
-  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
-  const [showSettings, setShowSettings] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  
-  const {
-    cards,
-    moves,
-    matches,
-    time,
-    totalPairs,
-    isGameComplete,
-    flipCard,
-    resetGame,
-    isFlipDisabled
-  } = useMemoryGame(difficulty, soundEnabled);
 
-  const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
-    setDifficulty(newDifficulty);
-    setShowSettings(false);
-    // Level start sound will be triggered by the useEffect in useMemoryGame
-  };
+<title>bolt.new | 520: Web server is returning an unknown error</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" id="cf_styles-css" href="/cdn-cgi/styles/main.css" />
 
-  const handleNextLevel = () => {
-    if (difficulty === 'easy') {
-      setDifficulty('medium');
-    } else if (difficulty === 'medium') {
-      setDifficulty('hard');
-    }
-  };
 
-  const getGridCols = () => {
-    switch (difficulty) {
-      case 'easy': return 'grid-cols-3';
-      case 'medium': return 'grid-cols-4';
-      case 'hard': return 'grid-cols-5';
-      default: return 'grid-cols-4';
-    }
-  };
-
-  const getDifficultyColor = () => {
-    switch (difficulty) {
-      case 'easy': return 'from-green-500 to-emerald-600';
-      case 'medium': return 'from-yellow-500 to-orange-500';
-      case 'hard': return 'from-red-500 to-pink-600';
-      default: return 'from-indigo-500 to-purple-600';
-    }
-  };
-
-  const getMaxWidth = () => {
-    switch (difficulty) {
-      case 'easy': return 'max-w-md';
-      case 'medium': return 'max-w-lg';
-      case 'hard': return 'max-w-xl';
-      default: return 'max-w-lg';
-    }
-  };
-
-  return (
-    <div className="h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-2 flex flex-col overflow-hidden">
-      <div className={`${getMaxWidth()} mx-auto flex flex-col h-full`}>
-        {/* Header */}
-        <div className="text-center mb-4 flex-shrink-0">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Gamepad2 className="w-6 h-6 text-white" />
-            <h1 className="text-2xl font-bold text-white">Memory Game</h1>
-          </div>
-          <p className="text-white/80 text-sm">Match all the pairs to win!</p>
-          
-          {/* Difficulty Badge */}
-          <div className="mt-2">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r ${getDifficultyColor()}`}>
-              {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Level
-            </span>
-          </div>
-        </div>
-
-        {/* Game Controls */}
-        <div className="flex justify-center gap-2 mb-3 flex-shrink-0">
-          <button
-            onClick={() => setSoundEnabled(!soundEnabled)}
-            className="bg-white/20 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1"
-            title={soundEnabled ? 'Disable sound' : 'Enable sound'}
-          >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          </button>
-          
-          <button
-            onClick={() => setShowSettings(!showSettings)}
-            className="bg-white/20 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 text-sm"
-          >
-            <Settings className="w-4 h-4" />
-            Settings
-          </button>
-          
-          <button
-            onClick={resetGame}
-            className="bg-white/20 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 text-sm"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Reset
-          </button>
-        </div>
-
-        {/* Settings Panel */}
-        {showSettings && (
-          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 mb-3 border border-white/30 flex-shrink-0">
-            <h3 className="text-white text-lg font-semibold mb-3">Difficulty</h3>
-            <div className="flex gap-2 justify-center">
-              {(['easy', 'medium', 'hard'] as const).map((level) => (
-                <button
-                  key={level}
-                  onClick={() => handleDifficultyChange(level)}
-                  className={`px-4 py-1.5 rounded-lg font-medium transition-all duration-200 text-sm ${
-                    difficulty === level
-                      ? 'bg-white text-purple-700'
-                      : 'bg-white/20 text-white hover:bg-white/30'
-                  }`}
-                >
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                  <span className="text-xs ml-1">
-                    ({level === 'easy' ? '6' : level === 'medium' ? '8' : '10'} pairs)
-                  </span>
-                </button>
-              ))}
+</head>
+<body>
+<div id="cf-wrapper">
+    <div id="cf-error-details" class="p-0">
+        <header class="mx-auto pt-10 lg:pt-6 lg:px-8 w-240 lg:w-full mb-8">
+            <h1 class="inline-block sm:block sm:mb-2 font-light text-60 lg:text-4xl text-black-dark leading-tight mr-2">
+              <span class="inline-block">Web server is returning an unknown error</span>
+              <span class="code-label">Error code 520</span>
+            </h1>
+            <div>
+               Visit <a href="https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_520&utm_campaign=bolt.new" target="_blank" rel="noopener noreferrer">cloudflare.com</a> for more information.
             </div>
-          </div>
-        )}
+            <div class="mt-3">2025-07-09 14:25:26 UTC</div>
+        </header>
+        <div class="my-8 bg-gradient-gray">
+            <div class="w-240 lg:w-full mx-auto">
+                <div class="clearfix md:px-8">
+                  
+<div id="cf-browser-status" class=" relative w-1/3 md:w-full py-15 md:p-0 md:py-8 md:text-left md:border-solid md:border-0 md:border-b md:border-gray-400 overflow-hidden float-left md:float-none text-center">
+  <div class="relative mb-10 md:m-0">
+    
+    <span class="cf-icon-browser block md:hidden h-20 bg-center bg-no-repeat"></span>
+    <span class="cf-icon-ok w-12 h-12 absolute left-1/2 md:left-auto md:right-0 md:top-0 -ml-6 -bottom-4"></span>
+    
+  </div>
+  <span class="md:block w-full truncate">You</span>
+  <h3 class="md:inline-block mt-3 md:mt-0 text-2xl text-gray-600 font-light leading-1.3">
+    
+    Browser
+    
+  </h3>
+  <span class="leading-1.3 text-2xl text-green-success">Working</span>
+</div>
 
-        {/* Game Stats */}
-        <div className="flex-shrink-0 mb-3">
-          <GameStats 
-            moves={moves} 
-            time={time} 
-            matches={matches} 
-            totalPairs={totalPairs} 
-          />
+<div id="cf-cloudflare-status" class=" relative w-1/3 md:w-full py-15 md:p-0 md:py-8 md:text-left md:border-solid md:border-0 md:border-b md:border-gray-400 overflow-hidden float-left md:float-none text-center">
+  <div class="relative mb-10 md:m-0">
+    <a href="https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_520&utm_campaign=bolt.new" target="_blank" rel="noopener noreferrer">
+    <span class="cf-icon-cloud block md:hidden h-20 bg-center bg-no-repeat"></span>
+    <span class="cf-icon-ok w-12 h-12 absolute left-1/2 md:left-auto md:right-0 md:top-0 -ml-6 -bottom-4"></span>
+    </a>
+  </div>
+  <span class="md:block w-full truncate">Amsterdam</span>
+  <h3 class="md:inline-block mt-3 md:mt-0 text-2xl text-gray-600 font-light leading-1.3">
+    <a href="https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_520&utm_campaign=bolt.new" target="_blank" rel="noopener noreferrer">
+    Cloudflare
+    </a>
+  </h3>
+  <span class="leading-1.3 text-2xl text-green-success">Working</span>
+</div>
+
+<div id="cf-host-status" class="cf-error-source relative w-1/3 md:w-full py-15 md:p-0 md:py-8 md:text-left md:border-solid md:border-0 md:border-b md:border-gray-400 overflow-hidden float-left md:float-none text-center">
+  <div class="relative mb-10 md:m-0">
+    
+    <span class="cf-icon-server block md:hidden h-20 bg-center bg-no-repeat"></span>
+    <span class="cf-icon-error w-12 h-12 absolute left-1/2 md:left-auto md:right-0 md:top-0 -ml-6 -bottom-4"></span>
+    
+  </div>
+  <span class="md:block w-full truncate">bolt.new</span>
+  <h3 class="md:inline-block mt-3 md:mt-0 text-2xl text-gray-600 font-light leading-1.3">
+    
+    Host
+    
+  </h3>
+  <span class="leading-1.3 text-2xl text-red-error">Error</span>
+</div>
+
+                </div>
+            </div>
         </div>
 
-        {/* Game Board */}
-        <div className="flex-1 flex items-center justify-center min-h-0">
-          <div className={`grid ${getGridCols()} gap-2 justify-center max-w-fit mx-auto`}>
-            {cards.map(card => (
-              <Card
-                key={card.id}
-                id={card.id}
-                symbol={card.symbol}
-                isFlipped={card.isFlipped}
-                isMatched={card.isMatched}
-                onClick={() => flipCard(card.id)}
-                disabled={isFlipDisabled}
-                difficulty={difficulty}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+        <div class="w-240 lg:w-full mx-auto mb-8 lg:px-8">
+            <div class="clearfix">
+                <div class="w-1/2 md:w-full float-left pr-6 md:pb-10 md:pr-0 leading-relaxed">
+                    <h2 class="text-3xl font-normal leading-1.3 mb-4">What happened?</h2>
+                    <p>There is an unknown connection issue between Cloudflare and the origin web server. As a result, the web page can not be displayed.</p>
+                </div>
+                <div class="w-1/2 md:w-full float-left leading-relaxed">
+                    <h2 class="text-3xl font-normal leading-1.3 mb-4">What can I do?</h2>
+                          <h3 class="text-15 font-semibold mb-2">If you are a visitor of this website:</h3>
+      <p class="mb-6">Please try again in a few minutes.</p>
 
-      {/* Game Complete Modal */}
-      {isGameComplete && (
-        <GameComplete
-          moves={moves}
-          time={time}
-          difficulty={difficulty}
-          onRestart={resetGame}
-          onNextLevel={handleNextLevel}
-        />
-      )}
+      <h3 class="text-15 font-semibold mb-2">If you are the owner of this website:</h3>
+      <p><span>There is an issue between Cloudflare's cache and your origin web server. Cloudflare monitors for these errors and automatically investigates the cause. To help support the investigation, you can pull the corresponding error log from your web server and submit it our support team.  Please include the Ray ID (which is at the bottom of this error page).</span> <a rel="noopener noreferrer" href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/error-520/">Additional troubleshooting resources</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cf-error-footer cf-wrapper w-240 lg:w-full py-10 sm:py-4 sm:px-8 mx-auto text-center sm:text-left border-solid border-0 border-t border-gray-300">
+  <p class="text-13">
+    <span class="cf-footer-item sm:block sm:mb-1">Cloudflare Ray ID: <strong class="font-semibold">95c87d83f835a56e</strong></span>
+    <span class="cf-footer-separator sm:hidden">&bull;</span>
+    <span id="cf-footer-item-ip" class="cf-footer-item hidden sm:block sm:mb-1">
+      Your IP:
+      <button type="button" id="cf-footer-ip-reveal" class="cf-footer-ip-reveal-btn">Click to reveal</button>
+      <span class="hidden" id="cf-footer-ip">2402:d000:a400:9284:e87c:be28:aabe:3a55</span>
+      <span class="cf-footer-separator sm:hidden">&bull;</span>
+    </span>
+    <span class="cf-footer-item sm:block sm:mb-1"><span>Performance &amp; security by</span> <a rel="noopener noreferrer" href="https://www.cloudflare.com/5xx-error-landing?utm_source=errorcode_520&utm_campaign=bolt.new" id="brand_link" target="_blank">Cloudflare</a></span>
+    
+  </p>
+  <script>(function(){function d(){var b=a.getElementById("cf-footer-item-ip"),c=a.getElementById("cf-footer-ip-reveal");b&&"classList"in b&&(b.classList.remove("hidden"),c.addEventListener("click",function(){c.classList.add("hidden");a.getElementById("cf-footer-ip").classList.remove("hidden")}))}var a=document;document.addEventListener&&a.addEventListener("DOMContentLoaded",d)})();</script>
+</div><!-- /.error-footer -->
+
+
     </div>
-  );
-}
-          {cards.map(card => (
-            <Card
-              key={card.id}
-              id={card.id}
-              symbol={card.symbol}
-              isFlipped={card.isFlipped}
-              isMatched={card.isMatched}
-              onClick={() => flipCard(card.id)}
-              disabled={isFlipDisabled}
-            />
-          ))}
-        </div>
-
-        {/* Game Complete Modal */}
-        {isGameComplete && (
-          <GameComplete
-            moves={moves}
-            time={time}
-            difficulty={difficulty}
-            onRestart={resetGame}
-            onNextLevel={handleNextLevel}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default App;
+</div>
+</body>
+</html>
