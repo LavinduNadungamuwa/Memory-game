@@ -105,6 +105,102 @@ export const useSoundEffects = (enabled: boolean = true) => {
 
   return {
     playMatchSound,
-    playLevelCompleteSound
+    playLevelCompleteSound,
+    playTapSound,
+    playLevelStartSound
   };
 };
+
+  // Generate tap sound - a subtle click
+  const playTapSound = useCallback(() => {
+    if (!enabled) return;
+    
+    try {
+      const audioContext = createAudioContext();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      const filter = audioContext.createBiquadFilter();
+
+      oscillator.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      // Quick percussive sound
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+      oscillator.type = 'square';
+      
+      // High-pass filter for crisp sound
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(300, audioContext.currentTime);
+      
+      // Quick envelope for tap effect
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.005);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (error) {
+      console.log('Audio not supported or blocked');
+    }
+  }, [createAudioContext, enabled]);
+
+  // Generate level start sound - an uplifting ascending tone
+  const playLevelStartSound = useCallback(() => {
+    if (!enabled) return;
+    
+    try {
+      const audioContext = createAudioContext();
+      
+      // Ascending arpeggio to signal start
+      const startMelody = [
+        { freq: 261.63, time: 0 },    // C4
+        { freq: 329.63, time: 0.1 },  // E4
+        { freq: 392.00, time: 0.2 },  // G4
+        { freq: 523.25, time: 0.3 },  // C5
+      ];
+
+      startMelody.forEach(({ freq, time }) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + time);
+        oscillator.type = 'sine';
+        
+        // Smooth envelope
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime + time);
+        gainNode.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + time + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + time + 0.15);
+        
+        oscillator.start(audioContext.currentTime + time);
+        oscillator.stop(audioContext.currentTime + time + 0.15);
+      });
+      
+      // Add a subtle sustain chord
+      const chordFreqs = [261.63, 329.63, 392.00]; // C-E-G chord
+      chordFreqs.forEach((freq) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime + 0.4);
+        osc.type = 'triangle';
+        
+        gain.gain.setValueAtTime(0, audioContext.currentTime + 0.4);
+        gain.gain.linearRampToValueAtTime(0.03, audioContext.currentTime + 0.42);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
+        
+        osc.start(audioContext.currentTime + 0.4);
+        osc.stop(audioContext.currentTime + 0.8);
+      });
+      
+    } catch (error) {
+      console.log('Audio not supported or blocked');
+    }
+  }, [createAudioContext, enabled]);

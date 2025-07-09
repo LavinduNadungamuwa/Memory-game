@@ -25,6 +25,7 @@ function App() {
   const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
     setDifficulty(newDifficulty);
     setShowSettings(false);
+    // Level start sound will be triggered by the useEffect in useMemoryGame
   };
 
   const handleNextLevel = () => {

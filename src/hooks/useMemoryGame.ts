@@ -11,7 +11,7 @@ interface Card {
 const symbols = ['heart', 'star', 'sparkles', 'zap', 'crown', 'gem', 'diamond', 'circle', 'square', 'triangle'];
 
 export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium', soundEnabled: boolean = true) => {
-  const { playMatchSound, playLevelCompleteSound } = useSoundEffects(soundEnabled);
+  const { playMatchSound, playLevelCompleteSound, playTapSound, playLevelStartSound } = useSoundEffects(soundEnabled);
   
   const getPairCount = () => {
     switch (difficulty) {
@@ -64,6 +64,8 @@ export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium',
     const card = cards.find(c => c.id === cardId);
     if (card?.isMatched) return;
 
+    // Play tap sound when card is flipped
+    playTapSound();
     if (!isGameActive) {
       setIsGameActive(true);
     }
@@ -76,11 +78,21 @@ export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium',
 
   const resetGame = useCallback(() => {
     initializeGame();
+    // Play level start sound when manually resetting
+    setTimeout(() => {
+      playLevelStartSound();
+    }, 300);
   }, [initializeGame]);
 
   // Initialize game on mount and when difficulty changes
   useEffect(() => {
     initializeGame();
+    // Play level start sound when starting a new game/level
+    const timer = setTimeout(() => {
+      playLevelStartSound();
+    }, 300); // Small delay to let the UI settle
+    
+    return () => clearTimeout(timer);
   }, [initializeGame]);
 
   // Timer effect - stops when game is complete
