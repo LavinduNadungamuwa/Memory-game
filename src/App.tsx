@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Gamepad2, RefreshCw, Settings } from 'lucide-react';
+import { Gamepad2, RefreshCw, Settings, Volume2, VolumeX } from 'lucide-react';
 import Card from './components/Card';
 import GameStats from './components/GameStats';
 import GameComplete from './components/GameComplete';
@@ -8,6 +8,7 @@ import { useMemoryGame } from './hooks/useMemoryGame';
 function App() {
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [showSettings, setShowSettings] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   
   const {
     cards,
@@ -19,7 +20,7 @@ function App() {
     flipCard,
     resetGame,
     isFlipDisabled
-  } = useMemoryGame(difficulty);
+  } = useMemoryGame(difficulty, soundEnabled);
 
   const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
     setDifficulty(newDifficulty);
@@ -73,6 +74,14 @@ function App() {
 
         {/* Game Controls */}
         <div className="flex justify-center gap-4 mb-8">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
+            title={soundEnabled ? 'Disable sound' : 'Enable sound'}
+          >
+            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+          
           <button
             onClick={() => setShowSettings(!showSettings)}
             className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"

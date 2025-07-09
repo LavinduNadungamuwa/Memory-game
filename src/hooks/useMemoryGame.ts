@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSoundEffects } from './useSoundEffects';
 
 interface Card {
   id: number;
@@ -9,7 +10,9 @@ interface Card {
 
 const symbols = ['heart', 'star', 'sparkles', 'zap', 'crown', 'gem', 'diamond', 'circle', 'square', 'triangle'];
 
-export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium') => {
+export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium', soundEnabled: boolean = true) => {
+  const { playMatchSound, playLevelCompleteSound } = useSoundEffects(soundEnabled);
+  
   const getPairCount = () => {
     switch (difficulty) {
       case 'easy': return 6;
@@ -103,6 +106,7 @@ export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium')
       if (firstCard && secondCard && firstCard.symbol === secondCard.symbol) {
         // Match found
         setTimeout(() => {
+          playMatchSound();
           setCards(prev => prev.map(card => 
             card.id === firstId || card.id === secondId 
               ? { ...card, isMatched: true }
@@ -128,10 +132,14 @@ export const useMemoryGame = (difficulty: 'easy' | 'medium' | 'hard' = 'medium')
   // Check for game completion
   useEffect(() => {
     if (matches === totalPairs && matches > 0) {
+      // Play completion sound after a short delay
+      setTimeout(() => {
+        playLevelCompleteSound();
+      }, 500);
       setIsGameComplete(true);
       setIsGameActive(false); // This stops the timer
     }
-  }, [matches, totalPairs]);
+  }, [matches, totalPairs, playLevelCompleteSound]);
 
   return {
     cards,
