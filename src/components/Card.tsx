@@ -8,7 +8,6 @@ interface CardProps {
   isMatched: boolean;
   onClick: () => void;
   disabled: boolean;
-  difficulty: 'easy' | 'medium' | 'hard';
 }
 
 const symbolMap: { [key: string]: React.ReactNode } = {
@@ -30,30 +29,11 @@ const Card: React.FC<CardProps> = ({
   isFlipped,
   isMatched,
   onClick,
-  disabled,
-  difficulty
+  disabled
 }) => {
-  const getCardSize = () => {
-    switch (difficulty) {
-      case 'easy': return 'w-16 h-16';
-      case 'medium': return 'w-14 h-14';
-      case 'hard': return 'w-12 h-12';
-      default: return 'w-14 h-14';
-    }
-  };
-
-  const getIconSize = () => {
-    switch (difficulty) {
-      case 'easy': return 'w-7 h-7';
-      case 'medium': return 'w-6 h-6';
-      case 'hard': return 'w-5 h-5';
-      default: return 'w-6 h-6';
-    }
-  };
-
   return (
     <div
-      className={`relative ${getCardSize()} cursor-pointer transition-all duration-300 ${
+      className={`relative w-20 h-20 cursor-pointer transition-all duration-300 ${
         disabled ? 'cursor-not-allowed' : 'hover:scale-105'
       }`}
       onClick={!disabled ? onClick : undefined}
@@ -66,8 +46,8 @@ const Card: React.FC<CardProps> = ({
         {/* Card Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg border-2 border-white/20 backdrop-blur-sm flex items-center justify-center">
-            <div className={`${difficulty === 'hard' ? 'w-6 h-6' : 'w-8 h-8'} bg-white/20 rounded-full flex items-center justify-center`}>
-              <div className={`${difficulty === 'hard' ? 'w-3 h-3' : 'w-4 h-4'} bg-white/40 rounded-full`}></div>
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-white/40 rounded-full"></div>
             </div>
           </div>
         </div>
@@ -82,11 +62,7 @@ const Card: React.FC<CardProps> = ({
             <div className={`transition-all duration-300 ${
               isMatched ? 'text-white' : 'text-gray-700'
             }`}>
-              <div className={getIconSize()}>
-                {React.cloneElement(symbolMap[symbol] as React.ReactElement, {
-                  className: getIconSize()
-                })}
-              </div>
+              {symbolMap[symbol]}
             </div>
           </div>
         </div>
