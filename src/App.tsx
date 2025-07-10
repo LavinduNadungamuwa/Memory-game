@@ -55,68 +55,68 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 p-2 sm:p-4 overflow-hidden flex flex-col">
+      <div className="max-w-4xl mx-auto flex-1 flex flex-col">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Gamepad2 className="w-8 h-8 text-white" />
-            <h1 className="text-4xl font-bold text-white">Memory Game</h1>
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+            <Gamepad2 className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Memory Game</h1>
           </div>
-          <p className="text-white/80 text-lg">Match all the pairs to win!</p>
+          <p className="text-white/80 text-sm sm:text-base lg:text-lg">Match all the pairs to win!</p>
           
           {/* Difficulty Badge */}
-          <div className="mt-4">
-            <span className={`inline-flex items-center px-4 py-2 rounded-full text-white font-medium bg-gradient-to-r ${getDifficultyColor()}`}>
+          <div className="mt-2 sm:mt-4">
+            <span className={`inline-flex items-center px-3 py-1 sm:px-4 sm:py-2 rounded-full text-white font-medium text-sm sm:text-base bg-gradient-to-r ${getDifficultyColor()}`}>
               {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Level
             </span>
           </div>
         </div>
 
         {/* Game Controls */}
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
+            className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 sm:gap-2"
             title={soundEnabled ? 'Disable sound' : 'Enable sound'}
           >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            {soundEnabled ? <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" /> : <VolumeX className="w-3 h-3 sm:w-4 sm:h-4" />}
           </button>
           
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
+            className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
           >
-            <Settings className="w-4 h-4" />
-            Settings
+            <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Settings</span>
           </button>
           
           <button
             onClick={resetGame}
-            className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-2"
+            className="bg-white/20 backdrop-blur-sm text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
           >
-            <RefreshCw className="w-4 h-4" />
-            Reset
+            <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Reset</span>
           </button>
         </div>
 
         {/* Settings Panel */}
         {showSettings && (
-          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white/30">
-            <h3 className="text-white text-xl font-semibold mb-4">Difficulty</h3>
-            <div className="flex gap-4 justify-center">
+          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-6 mb-4 sm:mb-6 border border-white/30">
+            <h3 className="text-white text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Difficulty</h3>
+            <div className="flex gap-2 sm:gap-4 justify-center">
               {(['easy', 'medium', 'hard'] as const).map((level) => (
                 <button
                   key={level}
                   onClick={() => handleDifficultyChange(level)}
-                  className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`px-3 py-1 sm:px-6 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base ${
                     difficulty === level
                       ? 'bg-white text-purple-700'
                       : 'bg-white/20 text-white hover:bg-white/30'
                   }`}
                 >
                   {level.charAt(0).toUpperCase() + level.slice(1)}
-                  <span className="text-sm ml-2">
+                  <span className="text-xs sm:text-sm ml-1 sm:ml-2 hidden sm:inline">
                     ({level === 'easy' ? '6' : level === 'medium' ? '8' : '10'} pairs)
                   </span>
                 </button>
@@ -126,15 +126,46 @@ function App() {
         )}
 
         {/* Game Stats */}
-        <GameStats 
-          moves={moves} 
-          time={time} 
-          matches={matches} 
-          totalPairs={totalPairs} 
-        />
+        <div className="mb-4 sm:mb-6">
+          <GameStats 
+            moves={moves} 
+            time={time} 
+            matches={matches} 
+            totalPairs={totalPairs} 
+          />
+        </div>
 
         {/* Game Board */}
-        <div className={`grid ${getGridCols()} gap-4 justify-center max-w-fit mx-auto`}>
+        <div className="flex-1 flex items-center justify-center">
+          <div className={`grid ${getGridCols()} gap-2 sm:gap-3 lg:gap-4 justify-center max-w-fit mx-auto`}>
+            {cards.map(card => (
+              <Card
+                key={card.id}
+                id={card.id}
+                symbol={card.symbol}
+                isFlipped={card.isFlipped}
+                isMatched={card.isMatched}
+                onClick={() => flipCard(card.id)}
+                disabled={isFlipDisabled}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Game Complete Modal */}
+        {isGameComplete && (
+          <GameComplete
+            moves={moves}
+            time={time}
+            difficulty={difficulty}
+            onRestart={resetGame}
+            onNextLevel={handleNextLevel}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
           {cards.map(card => (
             <Card
               key={card.id}

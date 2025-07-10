@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`relative w-20 h-20 cursor-pointer transition-all duration-300 ${
+      className={`relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 cursor-pointer transition-all duration-300 ${
         disabled ? 'cursor-not-allowed' : 'hover:scale-105'
       }`}
       onClick={!disabled ? onClick : undefined}
@@ -46,8 +46,8 @@ const Card: React.FC<CardProps> = ({
         {/* Card Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg border-2 border-white/20 backdrop-blur-sm flex items-center justify-center">
-            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-white/40 rounded-full"></div>
+            <div className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 bg-white/40 rounded-full"></div>
             </div>
           </div>
         </div>
@@ -62,7 +62,11 @@ const Card: React.FC<CardProps> = ({
             <div className={`transition-all duration-300 ${
               isMatched ? 'text-white' : 'text-gray-700'
             }`}>
-              {symbolMap[symbol]}
+              <div className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8">
+                {React.cloneElement(symbolMap[symbol] as React.ReactElement, {
+                  className: "w-full h-full"
+                })}
+              </div>
             </div>
           </div>
         </div>

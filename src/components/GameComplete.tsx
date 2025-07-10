@@ -36,58 +36,58 @@ const GameComplete: React.FC<GameCompleteProps> = ({
   const nextLevel = difficulty === 'easy' ? 'medium' : 'hard';
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl animate-bounce-in">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 max-w-sm sm:max-w-md w-full shadow-2xl animate-bounce-in max-h-[90vh] overflow-y-auto">
         <div className="text-center">
-          <div className="mb-6">
-            <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Level Complete!</h2>
-            <p className="text-gray-600">{rating.message}</p>
-            <p className="text-sm text-gray-500 mt-1 capitalize">
+          <div className="mb-4 sm:mb-6">
+            <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-500 mx-auto mb-2 sm:mb-4 animate-pulse" />
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Level Complete!</h2>
+            <p className="text-gray-600 text-sm sm:text-base">{rating.message}</p>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1 capitalize">
               {difficulty} difficulty conquered
             </p>
           </div>
           
-          <div className="flex justify-center gap-1 mb-6">
+          <div className="flex justify-center gap-1 mb-4 sm:mb-6">
             {[...Array(3)].map((_, i) => (
               <Star 
                 key={i} 
-                className={`w-8 h-8 ${
+                className={`w-6 h-6 sm:w-8 sm:h-8 ${
                   i < rating.stars ? 'text-yellow-400 fill-current' : 'text-gray-300'
                 }`}
               />
             ))}
           </div>
           
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <div className="grid grid-cols-2 gap-4 text-center">
+          <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-gray-800">{formatTime(time)}</div>
-                <div className="text-sm text-gray-600">Time</div>
+                <div className="text-xl sm:text-2xl font-bold text-gray-800">{formatTime(time)}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Time</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-gray-800">{moves}</div>
-                <div className="text-sm text-gray-600">Moves</div>
+                <div className="text-xl sm:text-2xl font-bold text-gray-800">{moves}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Moves</div>
               </div>
             </div>
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {canAdvance && (
               <button
                 onClick={onNextLevel}
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-emerald-700 transition-all duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:from-green-600 hover:to-emerald-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 Next Level ({nextLevel.charAt(0).toUpperCase() + nextLevel.slice(1)})
               </button>
             )}
             
             <button
               onClick={onRestart}
-              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
             >
-              <RefreshCw className="w-5 h-5" />
+              <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
               Play Again
             </button>
           </div>
