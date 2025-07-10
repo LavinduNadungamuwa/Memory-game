@@ -166,32 +166,5 @@ function App() {
     </div>
   );
 }
-          {cards.map(card => (
-            <Card
-              key={card.id}
-              id={card.id}
-              symbol={card.symbol}
-              isFlipped={card.isFlipped}
-              isMatched={card.isMatched}
-              onClick={() => flipCard(card.id)}
-              disabled={isFlipDisabled}
-            />
-          ))}
-        </div>
-
-        {/* Game Complete Modal */}
-        {isGameComplete && (
-          <GameComplete
-            moves={moves}
-            time={time}
-            difficulty={difficulty}
-            onRestart={resetGame}
-            onNextLevel={handleNextLevel}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default App;
